@@ -117,45 +117,6 @@ For non-destructive checks against a running local or deployed app, set `BASE_UR
 ```sh
 npm run smoke
 ```
-
-## Deploy: Vercel + Neon
-
-1. Create a free Neon project/database. Copy the **pooled** PostgreSQL connection string with `sslmode=require`.
-2. Replace `DATABASE_URL` in `.env.local` with that connection string. Keep `API_KEY` set to your chosen secret. Never commit `.env.local`.
-3. Initialize and seed the database:
-
-   ```sh
-   npm run db:migrate
-   npm run db:seed
-   ```
-
-4. Sign into Vercel and link a project from this directory:
-
-   ```sh
-   npx vercel login
-   npx vercel link
-   ```
-
-5. In the Vercel project’s environment variables, set **Production** values for `DATABASE_URL` (Neon pooled URL) and `API_KEY`. Alternatively use the interactive commands below; paste each value only at its prompt:
-
-   ```sh
-   npx vercel env add DATABASE_URL production
-   npx vercel env add API_KEY production
-   ```
-
-6. Deploy:
-
-   ```sh
-   npx vercel --prod
-   ```
-
-   `vercel.json` serves `public/` and rewrites the exact API paths to `api/index.js`. Use Node 24 in project settings. Production must use external PostgreSQL; the app rejects a PGlite URL on Vercel. Schema changes are applied explicitly with `db:migrate`, not on every cold start.
-
-7. Ensure the **production deployment** is publicly reachable over HTTPS (disable Vercel deployment protection for that URL if enabled). The API itself remains protected with `X-API-Key`.
-8. Set `BASE_URL` in `.env.local` to the resulting `https://...vercel.app` URL and run `npm run smoke`. Then use the page to book, look up, and cancel one demo appointment. Do this **before submission**.
-9. Submit the HTTPS base URL and API key through the assessment’s submission channel. State that Levels 1–5 are implemented. The web page is at the base URL; `/slots` and `/bookings` are directly beneath it.
-10. After submission, keep the Vercel deployment and Neon database active and unchanged until contacted. Do not run reset, reseed, redeploy, rotate the key, or delete the database during that period.
-
 ## Files
 
 ```text
