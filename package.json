@@ -1,0 +1,29 @@
+{
+  "name": "koya-clinic-booking",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env.local --watch server.js",
+    "start": "node --env-file-if-exists=.env.local server.js",
+    "db:migrate": "node --env-file-if-exists=.env.local scripts/migrate.js",
+    "db:seed": "node --env-file-if-exists=.env.local scripts/seed.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "test:postgres": "node --env-file-if-exists=.env.local --test --test-concurrency=1 test/postgres.test.js",
+    "check": "node --check server.js && node --check api/index.js && node --check src/app.js && node --check src/database.js && node --check public/app.js",
+    "smoke": "node --env-file-if-exists=.env.local scripts/smoke.js"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.15",
+    "express": "5.3.0",
+    "pg": "8.23.1",
+    "validator": "^13.15.35"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "embedded-postgres": "^18.6.0-beta.19"
+  }
+}

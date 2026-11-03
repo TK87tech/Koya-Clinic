@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153f36">
+  <meta name="description" content="Find a clinic appointment, reserve your time, and manage your booking with Koya Clinic.">
+  <title>Koya Clinic · A little time for your health</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to appointments</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Koya Clinic home"><span class="brand-mark" aria-hidden="true">✳</span><span>koya<span class="brand-light">clinic</span></span></a>
+    <nav aria-label="Main navigation"><a href="#appointments" class="nav-active">Book a visit</a><a href="#manage">My bookings <span aria-hidden="true">↗</span></a></nav>
+    <span class="header-note"><span class="status-dot"></span> Care that fits your day</span>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="small-line"></span> YOUR HEALTH, YOUR TIME</p>
+        <h1 id="hero-title">A little time.<br><em>A healthier you.</em></h1>
+        <p class="hero-description">Good care starts with a conversation. Find a time that works for you, and we’ll take it from there.</p>
+        <div class="hero-details"><span><span aria-hidden="true">◷</span> 30-minute appointments</span><span><span aria-hidden="true">✓</span> Instant confirmation</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="plant plant-one"></div><div class="plant plant-two"></div><div class="plant plant-three"></div>
+        <div class="care-card"><div class="care-card-top"><span class="mini-brand">✳</span><span>A MOMENT FOR YOU</span></div><div class="care-cross">+</div><div class="care-card-bottom"><span>Your next step<br><strong>to feeling better.</strong></span><span class="card-arrow">↗</span></div></div>
+        <div class="floating-note"><span class="note-check">✓</span><span>Less waiting.<br><strong>More living.</strong></span></div>
+        <span class="art-caption">A little care goes a long way.</span>
+      </div>
+    </section>
+
+    <section class="booking-section" id="appointments" aria-labelledby="appointments-title">
+      <div class="section-heading"><div><p class="eyebrow">LET’S MAKE TIME</p><h2 id="appointments-title">Find your appointment</h2></div><span class="timezone" id="timezone"></span></div>
+      <div class="booking-layout">
+        <div class="availability-panel">
+          <form id="connect-form" class="connection-box">
+            <div class="connection-title"><span class="lock-icon" aria-hidden="true">⌘</span><div><h3>Connect to the clinic</h3><p>Enter the API key provided by your clinic to view appointments.</p></div></div>
+            <div class="connect-fields"><label class="sr-only" for="api-key">Clinic API key</label><input id="api-key" type="password" placeholder="Your clinic API key" required autocomplete="off"><button type="submit" class="button button-dark" id="connect-button">Connect <span aria-hidden="true">→</span></button></div>
+            <p class="connection-note">Your key stays in this tab and is cleared when you leave.</p>
+          </form>
+          <div id="connected-bar" class="connected-bar" hidden><span><span class="status-dot"></span> Connected to the clinic</span><button id="disconnect" class="text-button" type="button">Disconnect</button></div>
+          <div class="filters"><div><label for="provider">Your practitioner</label><select id="provider" disabled><option value="">All practitioners</option></select></div><button class="text-button" id="refresh" disabled type="button">↻ Refresh</button></div>
+          <p id="slot-message" class="inline-message" role="status" aria-live="polite">Connect above to see available appointments.</p>
+          <div id="date-list" class="date-list" role="group" aria-label="Choose an appointment date"></div>
+          <div class="time-heading"><h3 id="time-title">Available times</h3><span id="slot-count" class="muted">—</span></div>
+          <div id="slot-list" class="slot-list"><div class="empty-state"><span aria-hidden="true">◷</span><p>Your next appointment starts here.</p><small>Available times will appear once you connect.</small></div></div>
+          <div class="availability-footer"><span class="legend-dot"></span> Live availability <span class="footer-separator">·</span> Select a time to continue</div>
+        </div>
+
+        <aside class="details-panel" aria-labelledby="details-title">
+          <span class="step-label">YOUR VISIT, AT A GLANCE</span><h2 id="details-title">Make it yours.</h2><p class="details-intro">Choose your time, add a few details, and you’re all set.</p>
+          <div id="selected-slot" class="selection-summary"><span aria-hidden="true">◷</span><p>No time selected yet<small>Pick an available appointment on the left.</small></p></div>
+          <form id="booking-form">
+            <label for="patient-name">Full name</label><input id="patient-name" name="name" autocomplete="name" placeholder="e.g. Ada Obi" required disabled>
+            <label for="patient-email">Email address</label><input id="patient-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required disabled>
+            <p class="field-note">Use this email to find your bookings later.</p>
+            <button class="button button-dark book-button" id="book-button" type="submit" disabled>Confirm appointment <span aria-hidden="true">↗</span></button>
+            <p id="booking-message" class="inline-message" role="status" aria-live="polite"></p>
+          </form>
+          <div class="details-footnote"><span aria-hidden="true">♡</span><p>Plans change. You can cancel your appointment anytime in My bookings.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="confirmation" class="confirmation" hidden tabindex="-1" aria-labelledby="confirmation-title">
+      <div class="confirmation-icon" aria-hidden="true">✓</div><div><p class="eyebrow">YOU’RE ALL SET</p><h2 id="confirmation-title">A moment for your health, booked.</h2><p id="confirmation-detail"></p><p class="reference">Booking reference: <code id="confirmation-id"></code></p><p class="muted">Save your reference. No confirmation email is sent.</p></div><button id="another-booking" class="button button-light" type="button">Book another visit ↗</button>
+    </section>
+
+    <section id="manage" class="manage-section" aria-labelledby="manage-title">
+      <div class="manage-heading"><p class="eyebrow">EVERYTHING IN ONE PLACE</p><h2 id="manage-title">Your upcoming plans.</h2><p>Find your appointments by email, or look up a booking with its reference.</p></div>
+      <div class="manage-content"><form id="lookup-form" class="lookup-form"><div><label for="lookup-value">Email address or booking reference</label><input id="lookup-value" placeholder="you@example.com or booking ID" required disabled></div><button class="button button-outline" id="lookup-button" type="submit" disabled>Find bookings <span aria-hidden="true">→</span></button></form><p id="lookup-message" class="inline-message" role="status" aria-live="polite">Connect to the clinic to manage your appointments.</p><div id="booking-list" class="booking-list"></div><button id="load-more" class="text-button" type="button" hidden>Load more appointments ↓</button></div>
+    </section>
+    <div class="bottom-note"><span aria-hidden="true">✳</span><p>Taking care of yourself is always time well spent.</p></div>
+  </main>
+  <footer class="site-footer"><a href="/" class="brand"><span class="brand-mark" aria-hidden="true">✳</span><span>koya<span class="brand-light">clinic</span></span></a><p>Thoughtful care. Simply booked.</p><span>Booking assessment · Demo clinic</span></footer>
+</body>
+</html>
